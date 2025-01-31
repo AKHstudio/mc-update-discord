@@ -44,12 +44,6 @@ jobs:
               run: |
                   ls -al
 
-            # activate the virtual environment
-            - name: Activate virtual environment
-              run: |
-                  source .venv/bin/activate
-                  python --version
-
             # download glossary_id.txt from actions artifact
             - name: Download glossary_id.txt
               uses: actions/download-artifact@v4
@@ -65,9 +59,11 @@ jobs:
                   path: ./
               continue-on-error: true
 
-            # # run glossary.py
-            - name: Run glossary.py
+            #  run glossary.py
+
+            - name: Activate virtual environment
               run: |
+                  source .venv/bin/activate
                   python glossary.py
 
             # # upload glossary_id.txt to actions artifact
