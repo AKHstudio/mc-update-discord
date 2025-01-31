@@ -31,6 +31,8 @@ jobs:
               with:
                   path: .venv
                   key: ${{ runner.os }}-venv-glossary
+                  restore-keys: |
+                      ${{ runner.os }}-venv-glossary
 
             # Install dependencies
             - name: Set up virtual environment
@@ -48,6 +50,8 @@ jobs:
               with:
                   path: glossary_id.txt
                   key: ${{ runner.os }}-glossary-id-${{ hashFiles('glossary.csv') }}
+                  restore-keys: |
+                      ${{ runner.os }}-glossary-id-
 
             - name: Run add_glossary.py
               run: |
