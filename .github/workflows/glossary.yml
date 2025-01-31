@@ -1,0 +1,60 @@
+name: 'add glossary'
+
+on:
+    workflow_dispatch:
+    push:
+        paths:
+            - 'glossary.csv' # glossary.csvが変更されたときに実行される
+        branches:
+            - main # mainブランチに変更があった場合のみ実行
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        env:
+            DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        steps:
+            # Checkout the repository
+            - name: 'Checkout'
+              uses: actions/checkout@v4
+
+            # Setup Python
+            - name: 'Setup Python'
+              uses: actions/setup-python@v5
+              with:
+                  python-version: '3.12.8'
+
+            # cache the virtual environment
+            - name: Cache virtual environment
+              id: cache-venv-glossary
+              uses: actions/cache@v4
+              with:
+                  path: .venv-glossary
+                  key: ${{ runner.os }}-venv-glossary-${{ hashFiles('requirements.txt') }}
+
+            # Install dependencies
+            - name: Set up virtual environment
+              if: steps.cache-venv-glossary.outputs.cache-hit != 'true'
+              run: |
+                  python -m venv .venv
+                  source .venv/bin/activate
+                  pip install -U requests python-dotenv
+                  deactivate
+
+            - name: Download glossary_id.txt
+              uses: actions/download-artifact@v4
+              with:
+                  name: glossary_id
+              continue-on-error: true
+
+            - name: Run add_glossary.py
+              run: |
+                  source .venv/bin/activate
+                  python glossary.py
+                  deactivate
+
+            - name: Upload glossary_id.txt
+              uses: actions/upload-artifact@v4
+              with:
+                  name: glossary_id
+                  path: glossary_id.txt

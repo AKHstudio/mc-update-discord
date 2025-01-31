@@ -14,12 +14,6 @@ source_lang = 'EN'
 target_lang = 'JA'
 
 
-if os.path.exists("old_glossary.csv"):
-    with open("old_glossary.csv", "r" , encoding="UTF-8") as f:
-        old_entries = f.read()
-else:
-    old_entries = None
-
 if os.path.exists("glossary_id.txt"):
     with open("glossary_id.txt", "r" , encoding="UTF-8" ) as f:
         old_glossary_id = f.read()
@@ -29,9 +23,6 @@ else:
 if os.path.exists("glossary.csv"):
     with open("glossary.csv", "r" , encoding="UTF-8") as f:
         entries = f.read()
-        if old_entries == entries:
-            print("変更がないため処理を終了します。")
-            exit(0)
 else:
     print("glossary.csv not found 登録する用語が見つかりませんでした。")
     print("処理を終了します。")
@@ -57,9 +48,6 @@ if result.status_code != 201:
     exit(1)
 
 # print(result.json())    
-
-with open("old_glossary.csv" , "w") as f:
-    f.write(entries)
 
 with open("glossary_id.txt" , "w") as f:
     f.write(result.json()["glossary_id"])
