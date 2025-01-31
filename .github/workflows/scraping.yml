@@ -66,9 +66,9 @@ jobs:
               continue-on-error: true
 
             #  run glossary.py
-
-            - name: Activate virtual environment
+            - name: Run glossary.py
               run: |
+                  which python
                   python glossary.py
 
             # # upload glossary_id.txt to actions artifact
