@@ -39,7 +39,10 @@ jobs:
               run: |
                   python -m venv .venv
                   pip install -r requirements.txt
-                  ls -a
+
+            - name: Check FileList
+              run: |
+                  ls -al
 
             # activate the virtual environment
             - name: Activate virtual environment
@@ -48,32 +51,32 @@ jobs:
                   python --version
 
             # download glossary_id.txt from actions artifact
-            # - name: Download glossary_id.txt
-            #   uses: actions/download-artifact@v4
-            #   with:
-            #       name: glossary_id
-            #       path: ./
+            - name: Download glossary_id.txt
+              uses: actions/download-artifact@v4
+              with:
+                  name: glossary_id
+                  path: ./
 
-            # - name: Download old_glossary.csv
-            #   uses: actions/download-artifact@v4
-            #   with:
-            #       name: old_glossary
-            #       path: ./
+            - name: Download old_glossary.csv
+              uses: actions/download-artifact@v4
+              with:
+                  name: old_glossary
+                  path: ./
 
             # # run glossary.py
-            # - name: Run glossary.py
-            #   run: |
-            #       python glossary.py
+            - name: Run glossary.py
+              run: |
+                  python glossary.py
 
             # # upload glossary_id.txt to actions artifact
-            # - name: Upload glossary_id.txt
-            #   uses: actions/upload-artifact@v4
-            #   with:
-            #       path: glossary_id.txt
-            #       name: glossary_id
+            - name: Upload glossary_id.txt
+              uses: actions/upload-artifact@v4
+              with:
+                  path: glossary_id.txt
+                  name: glossary_id
 
-            # - name: Upload old_glossary.csv
-            #   uses: actions/upload-artifact@v4
-            #   with:
-            #       path: old_glossary.csv
-            #       name: old_glossary
+            - name: Upload old_glossary.csv
+              uses: actions/upload-artifact@v4
+              with:
+                  path: old_glossary.csv
+                  name: old_glossary
