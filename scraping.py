@@ -58,8 +58,11 @@ try:
     # print(new_post)
 
     # スクレイピングログを取得
-    with open("scraping.log", "r" , encoding="UTF-8") as f:
-        scraping_log = f.read()
+    if os.path.exists("scraping.log"):
+        with open("scraping.log", "r" , encoding="UTF-8") as f:
+            scraping_log = f.read()
+    else:
+        scraping_log = None
 
     # ログと取得した投稿が一致しているか確認
     if scraping_log == new_post.text:
@@ -112,5 +115,6 @@ try:
             f.write(new_post.text)
 except Exception as e:
     print(f"エラーが発生しました: {e}")
+    exit(1)
 finally:
     driver.close()
