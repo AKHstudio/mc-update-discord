@@ -56,12 +56,14 @@ jobs:
               with:
                   name: glossary_id
                   path: ./
+              continue-on-error: true
 
             - name: Download old_glossary.csv
               uses: actions/download-artifact@v4
               with:
                   name: old_glossary
                   path: ./
+              continue-on-error: true
 
             # # run glossary.py
             - name: Run glossary.py
