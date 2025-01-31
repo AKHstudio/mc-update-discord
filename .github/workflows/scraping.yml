@@ -64,3 +64,4 @@ jobs:
                   gh variable set SCRAPING_LOG --body "$(cat scraping.log)"
               env:
                   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+              continue-on-error: true
