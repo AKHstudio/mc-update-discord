@@ -43,7 +43,7 @@ jobs:
               run: |
                   source .venv/bin/activate
                   which python
-                  pip freeze
+                  pip list
 
             - name: Check
               run: |
