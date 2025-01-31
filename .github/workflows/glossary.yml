@@ -14,7 +14,6 @@ jobs:
         env:
             DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
             GLOSSARY_ID: ${{ vars.GLOSSARY_ID }}
-            OLD_GLOSSARY_CSV: ${{ vars.OLD_GLOSSARY_CSV }}
         steps:
             # Checkout the repository
             - name: 'Checkout'
