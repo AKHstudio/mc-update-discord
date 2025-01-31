@@ -1,0 +1,78 @@
+name: 'minecraft changelog scraping'
+
+on:
+    workflow_dispatch:
+    # schedule to run every day at 12:00 UTC
+    schedule:
+        - cron: '0 12 * * *'
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        env:
+            DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+            DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        steps:
+            # Checkout the repository
+            - name: 'Checkout'
+              uses: actions/checkout@v4
+
+            # Setup Python
+            - name: 'Setup Python'
+              uses: actions/setup-python@v5
+              with:
+                  python-version: '3.12.8'
+
+            # cache the virtual environment
+            - name: Cache virtual environment
+              id: cache-venv
+              uses: actions/cache@v4
+              with:
+                  path: .venv
+                  key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-venv-
+
+            # Install dependencies
+            - name: Set up virtual environment
+              if: steps.cache-venv.outputs.cache-hit != 'true'
+              run: |
+                  python -m venv .venv
+                  pip install -r requirements.txt
+
+            # activate the virtual environment
+            - name: Activate virtual environment
+              run: |
+                  source .venv/Scripts/activate
+                  python --version
+
+            # download glossary_id.txt from actions artifact
+            # - name: Download glossary_id.txt
+            #   uses: actions/download-artifact@v4
+            #   with:
+            #       name: glossary_id
+            #       path: ./
+
+            # - name: Download old_glossary.csv
+            #   uses: actions/download-artifact@v4
+            #   with:
+            #       name: old_glossary
+            #       path: ./
+
+            # # run glossary.py
+            # - name: Run glossary.py
+            #   run: |
+            #       python glossary.py
+
+            # # upload glossary_id.txt to actions artifact
+            # - name: Upload glossary_id.txt
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #       path: glossary_id.txt
+            #       name: glossary_id
+
+            # - name: Upload old_glossary.csv
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #       path: old_glossary.csv
+            #       name: old_glossary
