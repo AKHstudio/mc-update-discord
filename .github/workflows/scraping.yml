@@ -38,6 +38,7 @@ jobs:
                   python -m venv .venv
                   source .venv/bin/activate
                   pip install -r requirements.txt
+                  deactivate
 
             # activate the virtual environment and check
             - name: Activate virtual environment
@@ -45,6 +46,7 @@ jobs:
                   source .venv/bin/activate
                   which python
                   pip list
+                  deactivate
 
             - name: Check
               run: |
@@ -68,8 +70,9 @@ jobs:
             #  run glossary.py
             - name: Run glossary.py
               run: |
-                  which python
+                  source .venv/bin/activate
                   python glossary.py
+                  deactivate
 
             # # upload glossary_id.txt to actions artifact
             - name: Upload glossary_id.txt
