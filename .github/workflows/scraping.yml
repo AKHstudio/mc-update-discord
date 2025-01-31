@@ -2,9 +2,10 @@ name: 'minecraft changelog scraping'
 
 on:
     workflow_dispatch:
-    # schedule to run every day at 12:00 UTC
-    # schedule:
-    #     - cron: '0 12 * * *'
+    # schedule to run every day at 12:00
+    schedule:
+        - cron: '0 12 * * *'
+        - cron: '0 0 * * *'
 
 jobs:
     run:
