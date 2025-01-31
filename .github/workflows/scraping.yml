@@ -86,3 +86,24 @@ jobs:
               with:
                   path: old_glossary.csv
                   name: old_glossary
+
+            # download scraping.log from actions artifact
+            - name: Download scraping.log
+              uses: actions/download-artifact@v4
+              with:
+                  name: scraping_log
+              continue-on-error: true
+
+            # run scraping.py
+            - name: Run scraping.py
+              run: |
+                  source .venv/bin/activate
+                  python scraping.py
+                  deactivate
+
+            # upload scraping.log to actions artifact
+            - name: Upload scraping.log
+              uses: actions/upload-artifact@v4
+              with:
+                  name: scraping_log
+                  path: scraping.log
