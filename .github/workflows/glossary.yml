@@ -55,6 +55,5 @@ jobs:
             - name: Set vars.GLOSSARY_ID and vars.OLD_GLOSSARY_CSV
               run: |
                   gh variable set GLOSSARY_ID --body "$(cat glossary_id.txt)"
-                  gh variable set OLD_GLOSSARY_CSV --body "$(cat glossary.csv)"
               env:
                   GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -6,7 +6,6 @@ load_dotenv()
 url = "https://api-free.deepl.com/v2/glossaries"
 DEEPL_API_KEY = os.environ.get("DEEPL_API_KEY" , os.getenv("DEEPL_API_KEY"))
 GLOSSARY_ID = os.environ.get("GLOSSARY_ID" , None)
-OLD_GLOSSARY_CSV = os.environ.get("OLD_GLOSSARY_CSV" , None)
 
 if DEEPL_API_KEY is None:
     print("DEEPL_API_KEY not found")
