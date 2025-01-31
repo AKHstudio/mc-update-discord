@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+glossary_id.txt
+old_glossary.csv
+scraping.log
