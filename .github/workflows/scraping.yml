@@ -50,7 +50,7 @@ jobs:
 
             - name: create id
               id: log-id
-              run: echo "::set-output name=id::$(date +%s)"
+              run: echo "id=$(date +%s) >> $GITHUB_OUTPUT"
 
             # get glossary_id.txt from actions cache
             - name: Cache glossary_id.txt
