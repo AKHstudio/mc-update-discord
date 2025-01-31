@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from get_chrome_driver import GetChromeDriver
+from datetime import datetime
 
 
 # 環境変数の読み込み
@@ -41,7 +42,8 @@ minecraft_changelogs_url = "https://feedback.minecraft.net/hc/en-us/sections/360
 get_driver = GetChromeDriver()
 get_driver.install()
 options = webdriver.ChromeOptions()
-options.add_argument('--headless')
+options.add_argument("--headless")
+options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
 # driver
 driver = webdriver.Chrome(options=options)
 
@@ -50,6 +52,7 @@ try:
     driver.get(minecraft_changelogs_url)
     # ページのソースを取得
     html = driver.page_source
+    # print(html)
     # BeautifulSoupでパース
     soup = BeautifulSoup(html, "html.parser")
     # 新しい投稿を取得
@@ -67,6 +70,7 @@ try:
     # ログと取得した投稿が一致しているか確認
     if scraping_log == new_post.text:
         print("新しい投稿はありません。")
+        exit(0)
     else:
         # 投稿をスクレイピング
         driver.get('https://feedback.minecraft.net' + new_post["href"])
@@ -74,6 +78,12 @@ try:
         soup = BeautifulSoup(html, "html.parser")
         artical_body = soup.find(class_="article-body")
 
+        farst_p = artical_body.find("p")
+        p_span_text = farst_p.find("span").text.strip()
+
+        date_obj = datetime.strptime(p_span_text, '%d %B %Y')
+        date_str = date_obj.strftime('%Y/%m/%d')
+        
         artical_h2 = artical_body.find_all("h2")
         artical_ul = artical_body.find_all("ul")
 
@@ -96,9 +106,9 @@ try:
                     changelog += f"- {li}\n"
 
         discord_webhook_data = {
-            "content": f"# {new_post.text}\nhttps://feedback.minecraft.net{new_post['href']}\n" + changelog,
+            "content": f"# {new_post.text}\nhttps://feedback.minecraft.net{new_post['href']}\n\n**投稿日 : {date_str}**\n" + changelog,
             "username": "Minecraft Changelogs",
-            "avatar_url": "https://github.com/AKHstudio/mc-update-discord/blob/main/icon/snail2.png"
+            "avatar_url": "https://raw.githubusercontent.com/AKHstudio/mc-update-discord/refs/heads/main/icon/snail2.png"
         }
 
         # Discordに投稿
