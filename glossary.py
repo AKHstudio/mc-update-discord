@@ -19,9 +19,6 @@ target_lang = 'JA'
 if os.path.exists("glossary.csv"):
     with open("glossary.csv", "r" , encoding="UTF-8") as f:
         entries = f.read()
-        if OLD_GLOSSARY_CSV == entries:
-            print("glossary.csv not changed 登録する用語が変更されていません。")
-            exit(0)
 else:
     print("glossary.csv not found 登録する用語が見つかりませんでした。")
     exit(0)
