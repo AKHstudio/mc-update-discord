@@ -30,7 +30,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: .venv
-                  key: ${{ runner.os }}-venv-glossary-${{ hashFiles('requirements.txt') }}
+                  key: ${{ runner.os }}-venv-glossary
 
             # Install dependencies
             - name: Set up virtual environment
@@ -47,9 +47,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: glossary_id.txt
-                  key: ${{ runner.os }}-glossary-id-${{ hashFiles('glossary_id.txt') }}
-                  restore-keys: |
-                      ${{ runner.os }}-glossary-id-
+                  key: ${{ runner.os }}-glossary-id-${{ hashFiles('glossary.csv') }}
 
             - name: Run add_glossary.py
               run: |
