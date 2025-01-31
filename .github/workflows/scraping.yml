@@ -59,6 +59,12 @@ jobs:
                   name: scraping_log
               continue-on-error: true
 
+            - name: Download glossary_id.txt
+              uses: actions/download-artifact@v4
+              with:
+                  name: glossary_id
+              continue-on-error: true
+
             # run scraping.py
             - name: Run scraping.py
               run: |
