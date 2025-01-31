@@ -4,8 +4,7 @@ on:
     workflow_dispatch:
     # schedule to run every day at 12:00
     schedule:
-        - cron: '0 15 * * *' # JSTの0時（UTCの前日15時）
-        - cron: '0 3 * * *' # JSTの12時（UTCの3時）
+        - cron: '0 15,3 * * *' # JSTの0時（UTCの前日15時） JSTの12時（UTCの3時）
 
 jobs:
     run:
@@ -60,6 +59,7 @@ jobs:
 
             # set vars.SCRAPING_LOG
             - name: Set vars.SCRAPING_LOG
+              if: ${{ hashFiles('scraping.log') != ''  }}
               run: |
                   gh variable set SCRAPING_LOG --body "$(cat scraping.log)"
               env:
