@@ -48,6 +48,10 @@ jobs:
                   pip list
                   deactivate
 
+            - name: create id
+              id: log-id
+              run: echo "::set-output name=id::$(date +%s)"
+
             # get glossary_id.txt from actions cache
             - name: Cache glossary_id.txt
               id: cache-glossary-id
@@ -64,7 +68,9 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: scraping.log
-                  key: ${{ runner.os }}-scraping-log
+                  key: ${{ runner.os }}-scraping-log-${{ steps.log-id.outputs.id }}
+                  restore-keys: |
+                      ${{ runner.os }}-scraping-log-
 
             # run scraping.py
             - name: Run scraping.py
