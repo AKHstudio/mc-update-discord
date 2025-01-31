@@ -13,6 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+            GLOSSARY_ID: ${{ vars.GLOSSARY_ID }}
         steps:
             # Checkout the repository
             - name: 'Checkout'
@@ -43,18 +44,15 @@ jobs:
                   pip install -U requests python-dotenv
                   deactivate
 
-            # get glossary_id.txt from actions cache
-            - name: Cache glossary_id.txt
-              id: cache-glossary-id
-              uses: actions/cache@v4
-              with:
-                  path: glossary_id.txt
-                  key: ${{ runner.os }}-glossary-id-${{ hashFiles('glossary.csv') }}
-                  restore-keys: |
-                      ${{ runner.os }}-glossary-id-
-
             - name: Run add_glossary.py
               run: |
                   source .venv/bin/activate
                   python glossary.py
                   deactivate
+
+            # set vars.GLOSSARY_ID
+            - name: Set vars.GLOSSARY_ID
+              run: |
+                  gh variable set GLOSSARY_ID --body "$(cat glossary_id.txt)"
+              env:
+                  GH_TOKEN: ${{ secrets.GH_TOKEN }}

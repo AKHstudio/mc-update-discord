@@ -10,20 +10,29 @@ from datetime import datetime
 # 環境変数の読み込み
 load_dotenv()
 
+if os.path.exists("glossary_id.txt"):
+    with open("glossary_id.txt" , "r" , encoding="UTF-8") as f:
+        glossary_id = f.read()
+else:
+    glossary_id = None
+
+# スクレイピングログを取得
+if os.path.exists("scraping.log"):
+    with open("scraping.log", "r" , encoding="UTF-8") as f:
+        scraping_log = f.read()
+else:
+    scraping_log = None
+
 # 環境変数を取得
 DEEPL_API_KEY =  os.environ.get("DEEPL_API_KEY" , os.getenv("DEEPL_API_KEY")) 
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL" , os.getenv("DISCORD_WEBHOOK_URL"))
+GLOSSARY_ID = os.environ.get("GLOSSARY_ID" ,  glossary_id)
+SCRAPING_LOG = os.environ.get("SCRAPING_LOG" , scraping_log)
 
 def deepl_translate(text: str | list[str]):
     source_lang = 'EN'
     target_lang = 'JA'
     url = "https://api-free.deepl.com/v2/translate"
-
-    if os.path.exists("glossary_id.txt"):
-        with open("glossary_id.txt" , "r" , encoding="UTF-8") as f:
-            glossary_id = f.read()
-    else:
-        glossary_id = ""
 
     headers = {
     "Authorization": f"DeepL-Auth-Key {DEEPL_API_KEY}"
@@ -32,7 +41,7 @@ def deepl_translate(text: str | list[str]):
         "text": text,
         "source_lang": source_lang,
         "target_lang": target_lang,
-        "glossary_id": glossary_id
+        "glossary_id": GLOSSARY_ID
     }
     response = requests.post(url,  headers=headers, data=params)
     # print(response.json())
@@ -63,15 +72,8 @@ try:
     
     # print(new_post)
 
-    # スクレイピングログを取得
-    if os.path.exists("scraping.log"):
-        with open("scraping.log", "r" , encoding="UTF-8") as f:
-            scraping_log = f.read()
-    else:
-        scraping_log = None
-
     # ログと取得した投稿が一致しているか確認
-    if scraping_log == new_post.text:
+    if SCRAPING_LOG == new_post.text:
         print("新しい投稿はありません。")
         exit(0)
     else:

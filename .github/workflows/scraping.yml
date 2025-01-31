@@ -13,6 +13,8 @@ jobs:
         env:
             DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
             DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            GLOSSARY_ID: ${{ vars.GLOSSARY_ID }}
+            SCRAPING_LOG: ${{ vars.SCRAPING_LOG }}
         steps:
             # Checkout the repository
             - name: 'Checkout'
@@ -49,33 +51,16 @@ jobs:
                   pip list
                   deactivate
 
-            - name: create id
-              id: log-id
-              run: echo "id=$(date +%s)" >> $GITHUB_OUTPUT
-
-            # get glossary_id.txt from actions cache
-            - name: Cache glossary_id.txt
-              id: cache-glossary-id
-              uses: actions/cache@v4
-              with:
-                  path: glossary_id.txt
-                  key: ${{ runner.os }}-glossary-id-${{ hashFiles('glossary.csv') }}
-                  restore-keys: |
-                      ${{ runner.os }}-glossary-id-
-
-            # get scraping.log from actions cache
-            - name: Cache scraping.log
-              id: cache-scraping-log
-              uses: actions/cache@v4
-              with:
-                  path: scraping.log
-                  key: ${{ runner.os }}-scraping-log-${{ steps.log-id.outputs.id }}
-                  restore-keys: |
-                      ${{ runner.os }}-scraping-log-
-
             # run scraping.py
             - name: Run scraping.py
               run: |
                   source .venv/bin/activate
                   python scraping.py
                   deactivate
+
+            # set vars.SCRAPING_LOG
+            - name: Set vars.SCRAPING_LOG
+              run: |
+                  gh variable set SCRAPING_LOG --body "$(cat scraping.log)"
+              env:
+                  GH_TOKEN: ${{ secrets.GH_TOKEN }}

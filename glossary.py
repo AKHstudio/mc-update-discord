@@ -5,6 +5,7 @@ load_dotenv()
 
 url = "https://api-free.deepl.com/v2/glossaries"
 DEEPL_API_KEY = os.environ.get("DEEPL_API_KEY" , os.getenv("DEEPL_API_KEY"))
+GLOSSARY_ID = os.environ.get("GLOSSARY_ID" , None)
 
 if DEEPL_API_KEY is None:
     print("DEEPL_API_KEY not found")
@@ -14,18 +15,11 @@ source_lang = 'EN'
 target_lang = 'JA'
 
 
-if os.path.exists("glossary_id.txt"):
-    with open("glossary_id.txt", "r" , encoding="UTF-8" ) as f:
-        old_glossary_id = f.read()
-else:
-    old_glossary_id = None
-
 if os.path.exists("glossary.csv"):
     with open("glossary.csv", "r" , encoding="UTF-8") as f:
         entries = f.read()
 else:
     print("glossary.csv not found 登録する用語が見つかりませんでした。")
-    print("処理を終了します。")
     exit(0)
 
 headers = {
@@ -52,9 +46,9 @@ if result.status_code != 201:
 with open("glossary_id.txt" , "w") as f:
     f.write(result.json()["glossary_id"])
 
-if old_glossary_id is not None:
+if GLOSSARY_ID is not None:
     # delete old glossary
-    result = requests.delete(f"{url}/{old_glossary_id}" , headers=headers)
+    result = requests.delete(f"{url}/{GLOSSARY_ID}" , headers=headers)
 
     if result.status_code != 204:
         print(result.status_code)
