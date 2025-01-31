@@ -52,41 +52,6 @@ jobs:
               run: |
                   ls -al
 
-            # download glossary_id.txt from actions artifact
-            - name: Download glossary_id.txt
-              uses: actions/download-artifact@v4
-              with:
-                  name: glossary_id
-                  path: ./
-              continue-on-error: true
-
-            - name: Download old_glossary.csv
-              uses: actions/download-artifact@v4
-              with:
-                  name: old_glossary
-                  path: ./
-              continue-on-error: true
-
-            #  run glossary.py
-            - name: Run glossary.py
-              run: |
-                  source .venv/bin/activate
-                  python glossary.py
-                  deactivate
-
-            # # upload glossary_id.txt to actions artifact
-            - name: Upload glossary_id.txt
-              uses: actions/upload-artifact@v4
-              with:
-                  path: glossary_id.txt
-                  name: glossary_id
-
-            - name: Upload old_glossary.csv
-              uses: actions/upload-artifact@v4
-              with:
-                  path: old_glossary.csv
-                  name: old_glossary
-
             # download scraping.log from actions artifact
             - name: Download scraping.log
               uses: actions/download-artifact@v4
