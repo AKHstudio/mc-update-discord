@@ -19,8 +19,11 @@ def deepl_translate(text: str | list[str]):
     target_lang = 'JA'
     url = "https://api-free.deepl.com/v2/translate"
 
-    with open("glossary_id.txt" , "r" , encoding="UTF-8") as f:
-        glossary_id = f.read()
+    if os.path.exists("glossary_id.txt"):
+        with open("glossary_id.txt" , "r" , encoding="UTF-8") as f:
+            glossary_id = f.read()
+    else:
+        glossary_id = ""
 
     headers = {
     "Authorization": f"DeepL-Auth-Key {DEEPL_API_KEY}"
@@ -83,7 +86,7 @@ try:
 
         date_obj = datetime.strptime(p_span_text, '%d %B %Y')
         date_str = date_obj.strftime('%Y/%m/%d')
-        
+
         artical_h2 = artical_body.find_all("h2")
         artical_ul = artical_body.find_all("ul")
 
