@@ -51,8 +51,8 @@ def deepl_translate(text: str | list[str]):
 # url
 minecraft_changelogs_url = "https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs"
 
-get_driver = GetChromeDriver()
-get_driver.install()
+# get_driver = GetChromeDriver()
+# get_driver.install()
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
 options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')

@@ -6,6 +6,7 @@ load_dotenv()
 url = "https://api-free.deepl.com/v2/glossaries"
 DEEPL_API_KEY = os.environ.get("DEEPL_API_KEY" , os.getenv("DEEPL_API_KEY"))
 GLOSSARY_ID = os.environ.get("GLOSSARY_ID" , None)
+OLD_GLOSSARY_CSV = os.environ.get("OLD_GLOSSARY_CSV" , None)
 
 if DEEPL_API_KEY is None:
     print("DEEPL_API_KEY not found")
@@ -18,6 +19,9 @@ target_lang = 'JA'
 if os.path.exists("glossary.csv"):
     with open("glossary.csv", "r" , encoding="UTF-8") as f:
         entries = f.read()
+        if OLD_GLOSSARY_CSV == entries:
+            print("glossary.csv not changed 登録する用語が変更されていません。")
+            exit(0)
 else:
     print("glossary.csv not found 登録する用語が見つかりませんでした。")
     exit(0)
