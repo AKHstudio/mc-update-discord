@@ -13,6 +13,8 @@ if DEEPL_API_KEY is None:
 source_lang = 'EN'
 target_lang = 'JA'
 
+old_entries = ""
+old_glossary_id = ""
 
 if os.path.exists("old_glossary.csv"):
     with open("old_glossary.csv", "r" , encoding="UTF-8") as f:
