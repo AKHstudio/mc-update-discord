@@ -29,7 +29,7 @@ jobs:
               id: cache-venv-glossary
               uses: actions/cache@v4
               with:
-                  path: .venv-glossary
+                  path: .venv
                   key: ${{ runner.os }}-venv-glossary-${{ hashFiles('requirements.txt') }}
 
             # Install dependencies
@@ -41,20 +41,18 @@ jobs:
                   pip install -U requests python-dotenv
                   deactivate
 
-            - name: Download glossary_id.txt
-              uses: actions/download-artifact@v4
+            # get glossary_id.txt from actions cache
+            - name: Cache glossary_id.txt
+              id: cache-glossary-id
+              uses: actions/cache@v4
               with:
-                  name: glossary_id
-              continue-on-error: true
+                  path: glossary_id.txt
+                  key: ${{ runner.os }}-glossary-id-${{ hashFiles('glossary_id.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-glossary-id-
 
             - name: Run add_glossary.py
               run: |
                   source .venv/bin/activate
                   python glossary.py
                   deactivate
-
-            - name: Upload glossary_id.txt
-              uses: actions/upload-artifact@v4
-              with:
-                  name: glossary_id
-                  path: glossary_id.txt
