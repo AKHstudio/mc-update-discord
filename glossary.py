@@ -13,16 +13,18 @@ if DEEPL_API_KEY is None:
 source_lang = 'EN'
 target_lang = 'JA'
 
-old_entries = ""
-old_glossary_id = ""
 
 if os.path.exists("old_glossary.csv"):
     with open("old_glossary.csv", "r" , encoding="UTF-8") as f:
         old_entries = f.read()
+else:
+    old_entries = None
 
 if os.path.exists("glossary_id.txt"):
     with open("glossary_id.txt", "r" , encoding="UTF-8" ) as f:
         old_glossary_id = f.read()
+else:
+    old_glossary_id = None
 
 if os.path.exists("glossary.csv"):
     with open("glossary.csv", "r" , encoding="UTF-8") as f:
@@ -62,10 +64,11 @@ with open("old_glossary.csv" , "w") as f:
 with open("glossary_id.txt" , "w") as f:
     f.write(result.json()["glossary_id"])
 
-# delete old glossary
-result = requests.delete(f"{url}/{old_glossary_id}" , headers=headers)
+if old_glossary_id is not None:
+    # delete old glossary
+    result = requests.delete(f"{url}/{old_glossary_id}" , headers=headers)
 
-if result.status_code != 204:
-    print(result.status_code)
-    print(result.text)
-    exit(1)
+    if result.status_code != 204:
+        print(result.status_code)
+        print(result.text)
+        exit(1)
