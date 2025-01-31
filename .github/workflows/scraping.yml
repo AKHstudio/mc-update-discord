@@ -30,8 +30,6 @@ jobs:
               with:
                   path: .venv
                   key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
-                  restore-keys: |
-                      ${{ runner.os }}-venv-
 
             # Install dependencies
             - name: Set up virtual environment
@@ -40,7 +38,14 @@ jobs:
                   python -m venv .venv
                   pip install -r requirements.txt
 
-            - name: Check FileList
+            # activate the virtual environment and check
+            - name: Activate virtual environment
+              run: |
+                  source .venv/bin/activate
+                  which python
+                  pip freeze
+
+            - name: Check
               run: |
                   ls -al
 
@@ -63,7 +68,6 @@ jobs:
 
             - name: Activate virtual environment
               run: |
-                  source .venv/bin/activate
                   python glossary.py
 
             # # upload glossary_id.txt to actions artifact
