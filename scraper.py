@@ -68,7 +68,7 @@ class Scraper:
             "glossary_id": GLOSSARY_ID
         }
         response = requests.post(url,  headers=headers, data=params)
-        print(response.json())
+        # print(response.json())
         sleep(1)
         return response.json()
 
