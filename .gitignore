@@ -174,3 +174,4 @@ cython_debug/
 glossary_id.txt
 old_glossary.csv
 scraping.log
+changelog.*
