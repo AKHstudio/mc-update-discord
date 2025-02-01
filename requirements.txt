@@ -3,3 +3,4 @@ python-dotenv
 requests
 selenium
 get-chrome-driver
+markitdown
