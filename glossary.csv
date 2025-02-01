@@ -4,8 +4,8 @@ Realms,Realms
 Bush,低木
 Firefly Bush,ホタルの低木
 Cow,ウシ
-Warm Cow,寒帯のウシ
-Cold Cow,寒冷地のウシ
+Warm Cow,熱帯のウシ
+Cold Cow,寒帯のウシ
 Windswept Hills,吹きさらしの丘
 Windswept Forest,吹きさらしの森
 Windswept Gravelly Hills,吹きさらしの砂利の丘
@@ -14,3 +14,6 @@ Forest,森林
 Birch Forest,シラカバの森
 Old Growth Birch Forest,シラカバの原生林
 Wildflowers,野花
+Warm Pig,熱帯のブタ
+Cold Pig,寒帯のブタ
+Temperate Pig,温帯のブタ
