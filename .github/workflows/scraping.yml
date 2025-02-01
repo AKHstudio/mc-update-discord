@@ -50,18 +50,34 @@ jobs:
                   pip list
                   deactivate
 
-            # run scraping.py
-            - name: Run scraping.py
+            # run scraping_release.py
+            - name: Run scraping_release.py
               run: |
                   source .venv/bin/activate
-                  python scraping.py
+                  python scraping_release.py
+                  deactivate
+
+            # run scraping_beta_and_preview.py
+            - name: Run scraping_beta_and_preview.py
+              run: |
+                  source .venv/bin/activate
+                  python scraping_beta_and_preview.py
                   deactivate
 
             # set vars.SCRAPING_LOG
             - name: Set vars.SCRAPING_LOG
-              if: ${{ hashFiles('scraping.log') != ''  }}
+              if: ${{ hashFiles('scraping-release.log') != ''  }}
               run: |
-                  gh variable set SCRAPING_LOG --body "$(cat scraping.log)"
+                  gh variable set SCRAPING_LOG --body "$(cat scraping-release.log)"
+              env:
+                  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+              continue-on-error: true
+
+            # set vars.SCRAPING_BETA_LOG
+            - name: Set vars.SCRAPING_BETA_LOG
+              if: ${{ hashFiles('scraping-beta.log') != ''  }}
+              run: |
+                  gh variable set SCRAPING_BETA_LOG --body "$(cat scraping-beta.log)"
               env:
                   GH_TOKEN: ${{ secrets.GH_TOKEN }}
               continue-on-error: true
