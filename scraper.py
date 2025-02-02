@@ -24,7 +24,7 @@ class Scraper:
     """
 
 
-    def __init__(self, type: Literal["Release", "Beta-and-Preview"], username="Minecraft Release Changelog", avatar_url="https://raw.githubusercontent.com/AKHstudio/mc-update-discord/refs/heads/main/icon/snail2.png"):
+    def __init__(self, type: Literal["Release", "Beta-and-Preview"], username="Minecraft Release Changelog", avatar_url="https://raw.githubusercontent.com/AKHstudio/mc-update-discord/refs/heads/main/icon/command_block.png"):
         """
         Minecraftの更新情報をスクレイピングしてDiscordに投稿するクラス
         """
