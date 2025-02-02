@@ -60,7 +60,7 @@ jobs:
             # Get new glossary
             - name: Get new glossary info
               run: |
-                  RESPONSE=(curl -s -w "\n%{http_code}"\
+                  RESPONSE=$(curl -s -w "\n%{http_code}"\
                     -X GET \
                     -H "Authorization: DeepL-Auth-Key ${{ secrets.DEEPL_API_KEY}}" \
                     -H "Content-Type: application/json" \
