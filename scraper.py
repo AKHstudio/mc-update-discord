@@ -94,7 +94,10 @@ class Scraper:
                 exit(1)
 
             # ログと取得した投稿が一致しているか確認
-            if SCRAPING_LOG == self.new_post.text:
+            if SCRAPING_LOG == self.new_post.text and self.type == "Release":
+                print("新しい投稿はありません。")
+                exit(0)
+            elif SCRAPING_BETA_LOG == self.new_post.text and self.type == "Beta-and-Preview":
                 print("新しい投稿はありません。")
                 exit(0)
             else:
