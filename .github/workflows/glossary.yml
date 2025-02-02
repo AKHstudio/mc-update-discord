@@ -69,6 +69,15 @@ jobs:
                   JSON_RESPONSE=$(echo "$RESPONSE" | sed '$d')
                   STATUS_CODE=$(echo "$RESPONSE" | tail -n1)
 
+                  echo "=== API Response (Raw) ==="
+                  echo "$RESPONSE"
+
+                  echo "=== Extracted JSON ==="
+                  echo "$JSON_RESPONSE" | jq .
+
+                  echo "=== HTTP Status Code ==="
+                  echo "$STATUS_CODE"
+
                   echo "| name | status | id | source_lang | target_lang | entry_count |" >> $GITHUB_STEP_SUMMARY
                   echo "|------|--------|----|-------------|-------------|-------------|" >> $GITHUB_STEP_SUMMARY
 
