@@ -56,3 +56,23 @@ jobs:
                   gh variable set GLOSSARY_ID --body "$(cat glossary_id.txt)"
               env:
                   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+            # Get new glossary
+            - name: Get new glossary info
+              run: |
+                  RESPONSE=(curl -s -w "\n%{http_code}"\
+                    -X GET \
+                    -H "Authorization: DeepL-Auth-Key ${{ secrets.DEEPL_API_KEY}}" \
+                    -H "Content-Type: application/json" \
+                    "https://api-free.deepl.com/v2/glossaries")
+
+                  JSON_RESPONSE=$(echo "$RESPONSE" | sed '$d')
+                  STATUS_CODE=$(echo "$RESPONSE" | tail -n1)
+
+                  echo "| name | status | id | source_lang | target_lang | entry_count |" >> $GITHUB_STEP_SUMMARY
+                  echo "|------|--------|----|-------------|-------------|-------------|" >> $GITHUB_STEP_SUMMARY
+
+                  echo "$JSON_RESPONSE" | jq -r --arg status "$STATUS_CODE" '
+                      .glossaries[] | 
+                      "| \(.name) | \($status) | \(.glossary_id) | \(.source_lang) | \(.target_lang) | \(.entry_count) |"' >> $GITHUB_STEP_SUMMARY
+              continue-on-error: true
