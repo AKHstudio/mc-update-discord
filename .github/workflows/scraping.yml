@@ -81,3 +81,24 @@ jobs:
               env:
                   GH_TOKEN: ${{ secrets.GH_TOKEN }}
               continue-on-error: true
+
+            # show summary
+            - name: Show summary
+              run: |
+                  echo "| name | status |" >> $GITHUB_STEP_SUMMARY
+                  echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+
+                  if [[ -f "scraping-release.log" ]]; then
+                    RELEASE_LOG=$(cat scraping-release.log)
+                    echo "| Release | ☑ 通知しました: $RELEASE_LOG |" >> $GITHUB_STEP_SUMMARY
+                  else
+                    echo "| Release | ☑ 新しい投稿はありません。 |" >> $GITHUB_STEP_SUMMARY
+                  fi
+
+                  if [[ -f "scraping-beta.log" ]]; then
+                    BETA_LOG=$(cat scraping-beta.log)
+                    echo "| Beta & Preview | ☑ 通知しました: $BETA_LOG |" >> $GITHUB_STEP_SUMMARY
+                  else
+                    echo "| Beta & Preview | ☑ 新しい投稿はありません。 |" >> $GITHUB_STEP_SUMMARY
+                  fi
+              continue-on-error: true
